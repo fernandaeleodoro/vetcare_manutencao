@@ -8,15 +8,13 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
     $stmt=$pdo->prepare("SELECT * FROM usuarios WHERE usuario=?");
     $stmt->execute([$usuario]);
     $conta=$stmt->fetch();
-    if (!$conta) {
-        $erro='Usuário não encontrado.'; // F01: enumeração de contas
-    } elseif ($senha !== $conta['senha']) {
-        $erro='Senha incorreta.'; // F01: mensagem diferencia usuário de senha
+    if (!$conta || $senha !== $conta['senha']) {
+        $erro='Credenciais inválidas. Verifique usuário e senha.';
     } else {
-        // F02: não regenera o ID da sessão após autenticação
+        session_regenerate_id(true);
         $_SESSION['usuario_id']=$conta['id'];
         $_SESSION['usuario_nome']=$conta['nome'];
-        header('Location: index.php'); exit;
+        header('Location: ' . BASE_URL . '/index.php'); exit;
     }
 }
 $titulo='Entrar'; include __DIR__.'/app/includes/header.php';

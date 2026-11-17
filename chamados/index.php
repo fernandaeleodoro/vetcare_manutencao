@@ -3,9 +3,9 @@ require_once __DIR__.'/../app/config/database.php';require_once __DIR__.'/../app
 $titulo='Central de suporte';
 $status=$_GET['status']??'';$modulo=$_GET['modulo']??'';
 $sql="SELECT * FROM chamados WHERE 1=1";$params=[];
-if($status!==''){$sql.=" AND status=?";$params[]=$status;}
-if($modulo!==''){$sql.=" AND modulo=?";$params[]=$modulo;}
-$sql.=" ORDER BY FIELD(prioridade,'Urgente','Alta','Média','Baixa'), criado_em DESC";
+if($status!==''){$sql .= " AND status=?";$params[]=$status;}
+if($modulo!==''){$sql .= " AND modulo=?";$params[]=$modulo;}
+$sql .= " ORDER BY FIELD(prioridade,'Urgente','Alta','Média','Baixa'), criado_em DESC";
 $stmt=$pdo->prepare($sql);$stmt->execute($params);$rows=$stmt->fetchAll();
 $counts=$pdo->query("SELECT status,COUNT(*) total FROM chamados GROUP BY status")->fetchAll(PDO::FETCH_KEY_PAIR);
 include __DIR__.'/../app/includes/header.php';
@@ -23,7 +23,7 @@ include __DIR__.'/../app/includes/header.php';
 <h2>Consultar chamados</h2>
 <form method="get" class="grid">
  <div class="field"><label>Status</label><select name="status"><option value="">Todos</option><?php foreach(['Aberto','Em análise','Aguardando informações','Resolvido','Fechado'] as $v):?><option value="<?=htmlspecialchars($v)?>" <?=$status===$v?'selected':''?>><?=htmlspecialchars($v)?></option><?php endforeach;?></select></div>
- <div class="field"><label>Módulo</label><select name="modulo"><option value="">Todos</option><?php foreach(['Login','Dashboard','Tutores','Animais','Consultas','Outro'] as $v):?><option <?=$modulo===$v?'selected':''?>><?=$v?></option><?php endforeach;?></select></div>
+ <div class="field"><label>Módulo</label><select name="modulo"><option value="">Todos</option><?php foreach(['Login','Dashboard','Tutores','Animais','Consultas','Outro'] as $v):?><option value="<?=htmlspecialchars($v)?>" <?=$modulo===$v?'selected':''?>><?=htmlspecialchars($v)?></option><?php endforeach;?></select></div>
  <div class="field" style="align-self:end"><button>Filtrar</button> <a class="btn secondary" href="index.php">Limpar</a></div>
 </form></section>
 <section class="panel table-wrap"><table>
