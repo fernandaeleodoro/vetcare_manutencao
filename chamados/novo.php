@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../config/database.php';require_once __DIR__.'/../config/auth.php';exigirLogin();
+require_once __DIR__.'/../app/config/database.php';require_once __DIR__.'/../app/config/auth.php';exigirLogin();
 $titulo='Abrir chamado';$erro='';
 if($_SERVER['REQUEST_METHOD']==='POST'){
  $campos=['titulo','modulo','solicitante','equipe','descricao','passos','resultado_esperado','resultado_obtido','severidade','prioridade'];
@@ -14,7 +14,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   header('Location: ver.php?id='.$id.'&novo=1');exit;
  }
 }
-include __DIR__.'/../includes/header.php';
+include __DIR__.'/../app/includes/header.php';
 ?>
 <h1>Abrir chamado técnico</h1>
 <p class="muted">Descreva o problema de forma que outra pessoa consiga reproduzi-lo.</p>
@@ -39,4 +39,4 @@ include __DIR__.'/../includes/header.php';
 </div><p class="muted">Severidade representa o impacto técnico. Prioridade indica a urgência de atendimento.</p></section>
 <div class="actions"><button type="submit">Registrar chamado</button><a class="btn secondary" href="index.php">Cancelar</a></div>
 </form>
-<?php include __DIR__.'/../includes/footer.php';?>
+<?php include __DIR__.'/../app/includes/footer.php';?>

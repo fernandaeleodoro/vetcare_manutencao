@@ -1,5 +1,7 @@
 <?php
 
+define('BASE_URL', '/vetcare_manutencao');
+
 $host = 'localhost';
 $porta = '3307';
 $banco = 'vetcare';
@@ -14,6 +16,7 @@ try {
     );
 
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = $conn;
 
 } catch (PDOException $e) {
     die("Erro ao conectar ao banco: " . $e->getMessage());

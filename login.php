@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/config/database.php';
+require_once __DIR__.'/app/config/database.php';
 if (session_status()===PHP_SESSION_NONE) session_start();
 $erro='';
 if ($_SERVER['REQUEST_METHOD']==='POST') {
@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         header('Location: index.php'); exit;
     }
 }
-$titulo='Entrar'; include __DIR__.'/includes/header.php';
+$titulo='Entrar'; include __DIR__.'/app/includes/header.php';
 ?>
 <div class="login-box"><h1>🐾 VetCare</h1><p class="muted">Acesse o sistema da clínica.</p>
 <?php if($erro): ?><div class="alert"><?= htmlspecialchars($erro) ?></div><?php endif; ?>
 <form method="post"><div class="field"><label>Usuário</label><input name="usuario" required></div><div class="field"><label>Senha</label><input type="password" name="senha" required></div><button type="submit">Entrar</button></form>
 <p class="muted">Acesso de demonstração: admin / admin123</p></div>
-<?php include __DIR__.'/includes/footer.php'; ?>
+<?php include __DIR__.'/app/includes/footer.php'; ?>

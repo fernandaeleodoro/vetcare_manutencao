@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../config/database.php';require_once __DIR__.'/../config/auth.php';exigirLogin();
+require_once __DIR__.'/../app/config/database.php';require_once __DIR__.'/../app/config/auth.php';exigirLogin();
 $id=(int)($_GET['id']??0);$s=$pdo->prepare("SELECT * FROM chamados WHERE id=?");$s->execute([$id]);$c=$s->fetch();
 if(!$c){http_response_code(404);die('Chamado não encontrado.');}
 $titulo='Chamado #'.$id;$erro='';
@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
  }
 }
 $h=$pdo->prepare("SELECT * FROM historico_chamados WHERE chamado_id=? ORDER BY criado_em DESC");$h->execute([$id]);$historico=$h->fetchAll();
-include __DIR__.'/../includes/header.php';
+include __DIR__.'/../app/includes/header.php';
 ?>
 <h1>Chamado #<?=str_pad($id,4,'0',STR_PAD_LEFT)?></h1>
 <?php if(isset($_GET['novo'])):?><div class="alert success">Chamado registrado com sucesso.</div><?php endif;?>
@@ -42,4 +42,4 @@ include __DIR__.'/../includes/header.php';
 <?php if(!$historico):?><p class="muted">Ainda não há atualizações.</p><?php endif;?>
 <?php foreach($historico as $item):?><div style="border-left:3px solid #126c79;padding:8px 15px;margin:12px 0"><b><?=htmlspecialchars($item['autor'])?></b> <span class="muted">• <?=date('d/m/Y H:i',strtotime($item['criado_em']))?></span><p><?=nl2br(htmlspecialchars($item['comentario']))?></p><?php if($item['status_novo']):?><span class="tag"><?=htmlspecialchars($item['status_anterior']?:'Novo')?> → <?=htmlspecialchars($item['status_novo'])?></span><?php endif;?></div><?php endforeach;?>
 </section>
-<?php include __DIR__.'/../includes/footer.php';?>
+<?php include __DIR__.'/../app/includes/footer.php';?>

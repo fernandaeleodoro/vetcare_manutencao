@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../config/database.php';require_once __DIR__.'/../config/auth.php';exigirLogin();
+require_once __DIR__.'/../app/config/database.php';require_once __DIR__.'/../app/config/auth.php';exigirLogin();
 $titulo='Central de suporte';
 $status=$_GET['status']??'';$modulo=$_GET['modulo']??'';
 $sql="SELECT * FROM chamados WHERE 1=1";$params=[];
@@ -8,7 +8,7 @@ if($modulo!==''){$sql.=" AND modulo=?";$params[]=$modulo;}
 $sql.=" ORDER BY FIELD(prioridade,'Urgente','Alta','Média','Baixa'), criado_em DESC";
 $stmt=$pdo->prepare($sql);$stmt->execute($params);$rows=$stmt->fetchAll();
 $counts=$pdo->query("SELECT status,COUNT(*) total FROM chamados GROUP BY status")->fetchAll(PDO::FETCH_KEY_PAIR);
-include __DIR__.'/../includes/header.php';
+include __DIR__.'/../app/includes/header.php';
 ?>
 <h1>Central de suporte</h1>
 <p class="muted">Registre incidentes encontrados no VetCare e acompanhe o atendimento.</p>
@@ -33,4 +33,4 @@ include __DIR__.'/../includes/header.php';
 <td>#<?=str_pad($r['id'],4,'0',STR_PAD_LEFT)?></td><td><?=htmlspecialchars($r['titulo'])?></td><td><?=htmlspecialchars($r['modulo'])?></td><td><span class="tag"><?=htmlspecialchars($r['prioridade'])?></span></td><td><span class="tag"><?=htmlspecialchars($r['status'])?></span></td><td><?=date('d/m/Y H:i',strtotime($r['criado_em']))?></td><td><a href="ver.php?id=<?=$r['id']?>">Detalhes</a></td>
 </tr><?php endforeach;?>
 </table></section>
-<?php include __DIR__.'/../includes/footer.php';?>
+<?php include __DIR__.'/../app/includes/footer.php';?>

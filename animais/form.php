@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../config/database.php';require_once __DIR__.'/../config/auth.php';exigirLogin();
+require_once __DIR__.'/../app/config/database.php';require_once __DIR__.'/../app/config/auth.php';exigirLogin();
 $id=(int)($_GET['id']??0);$r=['tutor_id'=>'','nome'=>'','especie'=>'','raca'=>'','nascimento'=>'','sexo'=>'','observacoes'=>'','ativo'=>1];
 if($id){$s=$pdo->prepare("SELECT * FROM animais WHERE id=?");$s->execute([$id]);$r=$s->fetch()?:$r;}
 $tutores=$pdo->query("SELECT id,nome FROM tutores ORDER BY nome")->fetchAll();$erro='';
@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   header('Location: index.php');exit;
  }
 }
-$titulo=$id?'Editar animal':'Novo animal';include __DIR__.'/../includes/header.php';?>
+$titulo=$id?'Editar animal':'Novo animal';include __DIR__.'/../app/includes/header.php';?>
 <h1><?=$titulo?></h1><section class="panel"><?php if($erro):?><div class="alert"><?=$erro?></div><?php endif;?>
 <form method="post">
 <div class="field"><label>Tutor</label><select name="tutor_id" required><option value="">Selecione</option><?php foreach($tutores as $t):?><option value="<?=$t['id']?>" <?=$r['tutor_id']==$t['id']?'selected':''?>><?=htmlspecialchars($t['nome'])?></option><?php endforeach;?></select></div>
@@ -24,4 +24,4 @@ $titulo=$id?'Editar animal':'Novo animal';include __DIR__.'/../includes/header.p
 <div class="field"><label>Sexo</label><select name="sexo"><option value="">Selecione</option><option <?=$r['sexo']==='Macho'?'selected':''?>>Macho</option><option <?=$r['sexo']==='Fêmea'?'selected':''?>>Fêmea</option></select></div>
 <div class="field"><label>Observações</label><textarea name="observacoes"><?=htmlspecialchars($r['observacoes'])?></textarea></div>
 <?php if($id):?><div class="field"><label>Situação</label><select name="ativo"><option value="1" <?=$r['ativo']?'selected':''?>>Ativo</option><option value="0" <?=!$r['ativo']?'selected':''?>>Inativo</option></select></div><?php endif;?>
-<button>Salvar</button> <a class="btn secondary" href="index.php">Cancelar</a></form></section><?php include __DIR__.'/../includes/footer.php';?>
+<button>Salvar</button> <a class="btn secondary" href="index.php">Cancelar</a></form></section><?php include __DIR__.'/../app/includes/footer.php';?>

@@ -38,7 +38,11 @@ A central de suporte fica no menu **Suporte**. Os estudantes podem abrir chamado
 O arquivo `DOCENTE_GABARITO.md` contém o inventário das falhas intencionais. Não o disponibilize aos estudantes antes da atividade.
 
 ## Estrutura
-- `config/`: conexão e autenticação
-- `includes/`: cabeçalho e navegação
-- `tutores/`, `animais/`, `consultas/`: operações CRUD
+- `app/config/`: conexão, autenticação e constantes do projeto
+- `app/includes/`: cabeçalho, navegação e rodapé
+- `assets/`: arquivos estáticos visuais
+- `tutores/`, `animais/`, `consultas/`, `chamados/`: operações CRUD e suporte
 - `database/vetcare.sql`: banco e dados fictícios
+
+### Organização atual
+A estrutura foi reorganizada para separar o código da aplicação das páginas e recursos públicos, mantendo as rotas existentes funcionando sem quebrar a navegação do sistema.

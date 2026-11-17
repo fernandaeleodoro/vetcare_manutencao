@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 function exigirLogin() {
     if (!isset($_SESSION['usuario_id'])) {
-        header('Location: /vetcare_manutencao/login.php');
+        header('Location: ' . BASE_URL . '/login.php');
         exit;
     }
 }
