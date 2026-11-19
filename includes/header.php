@@ -1,7 +1,7 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 $titulo = $titulo ?? 'VetCare';
-$baseUrl = defined('BASE_URL') ? BASE_URL : '/vetcare_manutencao';
+$baseUrl = defined('BASE_URL') ? BASE_URL : '/fernanda_2026/vetcare_manutencao';
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -21,7 +21,7 @@ $baseUrl = defined('BASE_URL') ? BASE_URL : '/vetcare_manutencao';
       <a href="<?= htmlspecialchars($baseUrl) ?>/animais/index.php">Animais</a>
       <a href="<?= htmlspecialchars($baseUrl) ?>/consultas/index.php">Consultas</a>
       <a href="<?= htmlspecialchars($baseUrl) ?>/chamados/index.php">Suporte</a>
-      <a href="<?= htmlspecialchars($baseUrl) ?>/logout.php">Sair</a>
+      <button type="button" class="btn-sair" id="abrirConfirmacaoSair" aria-haspopup="dialog"><span aria-hidden="true">↪</span> Sair</button>
     <?php endif; ?>
   </nav>
 </header>

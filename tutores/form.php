@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../app/config/database.php'; require_once __DIR__.'/../app/config/auth.php'; exigirLogin();
+require_once __DIR__.'/../config/database.php'; require_once __DIR__.'/../config/auth.php'; exigirLogin();
 $id=(int)($_GET['id']??0); $r=['nome'=>'','telefone'=>'','email'=>'','endereco'=>'','ativo'=>1];
 if($id){$s=$pdo->prepare("SELECT * FROM tutores WHERE id=?");$s->execute([$id]);$r=$s->fetch()?:$r;}
 $erro='';
@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
   header('Location: index.php');exit;
  }
 }
-$titulo=$id?'Editar tutor':'Novo tutor';include __DIR__.'/../app/includes/header.php';
+$titulo=$id?'Editar tutor':'Novo tutor';include __DIR__.'/../includes/header.php';
 ?>
 <h1><?=$titulo?></h1><section class="panel">
 <?php if($erro):?><div class="alert"><?=$erro?></div><?php endif;?>
@@ -22,5 +22,5 @@ $titulo=$id?'Editar tutor':'Novo tutor';include __DIR__.'/../app/includes/header
 <div class="field"><label>E-mail</label><input type="email" name="email" value="<?=htmlspecialchars($r['email'])?>"></div>
 <div class="field"><label>Endereço</label><input name="endereco" value="<?=htmlspecialchars($r['endereco'])?>"></div>
 <?php if($id):?><div class="field"><label>Situação</label><select name="ativo"><option value="1" <?=$r['ativo']?'selected':''?>>Ativo</option><option value="0" <?=!$r['ativo']?'selected':''?>>Inativo</option></select></div><?php endif;?>
-<button>Salvar</button> <a class="btn secondary" href="index.php">Cancelar</a>
-</form></section><?php include __DIR__.'/../app/includes/footer.php';?>
+<div class="actions"><button type="submit" class="btn-primary"><span aria-hidden="true">✓</span> Salvar</button> <a class="btn secondary" href="index.php"><span aria-hidden="true">×</span> Cancelar</a></div>
+</form></section><?php include __DIR__.'/../includes/footer.php';?>

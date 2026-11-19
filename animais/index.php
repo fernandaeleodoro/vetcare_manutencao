@@ -1,88 +1,40 @@
-
 <?php
-require_once __DIR__ . '/config/database.php';
-require_once __DIR__ . '/config/auth.php';
-
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/auth.php';
 exigirLogin();
 
-$titulo = 'Painel';
-
-$tutores = (int) $pdo->query(
-    "SELECT COUNT(*) FROM tutores WHERE ativo = 1"
-)->fetchColumn();
-
-$animais = (int) $pdo->query(
-    "SELECT COUNT(*) FROM animais"
-)->fetchColumn();
-
-$consultas = (int) $pdo->query(
-    "SELECT COUNT(*) FROM consultas WHERE status = 'Agendada'"
-)->fetchColumn();
-
-$proximas = $pdo->query(
-    "SELECT c.*, a.nome AS animal
-     FROM consultas c
-     INNER JOIN animais a ON a.id = c.animal_id
-     ORDER BY c.data_consulta ASC
-     LIMIT 5"
-)->fetchAll(PDO::FETCH_ASSOC);
-
-include __DIR__ . '/includes/header.php';
+$titulo = 'Animais';
+$rows = $pdo->query("SELECT a.*, t.nome AS tutor FROM animais a JOIN tutores t ON t.id=a.tutor_id ORDER BY a.nome")->fetchAll();
+include __DIR__ . '/../includes/header.php';
 ?>
-
-<h1>Olá, <?= htmlspecialchars($_SESSION['usuario_nome']) ?></h1>
-
-<p class="muted">Visão geral da clínica veterinária.</p>
-
-<div class="grid">
-    <div class="stat">
-        <span>Tutores ativos</span>
-        <strong><?= $tutores ?></strong>
-    </div>
-
-    <div class="stat">
-        <span>Animais cadastrados</span>
-        <strong><?= $animais ?></strong>
-    </div>
-
-    <div class="stat">
-        <span>Consultas agendadas</span>
-        <strong><?= $consultas ?></strong>
-    </div>
+<h1>Animais</h1>
+<p class="muted">Pacientes cadastrados na clínica.</p>
+<div class="actions"><a class="btn btn-primary" href="form.php"><span aria-hidden="true">＋</span> Novo animal</a></div>
+<div class="panel table-wrap">
+<table>
+<tr><th>Nome</th><th>Espécie</th><th>Raça</th><th>Tutor</th><th>Nascimento</th><th>Idade</th><th>Ações</th></tr>
+<?php foreach ($rows as $r):
+    $idade = 0;
+    if (!empty($r['nascimento'])) {
+        $hoje = new DateTime('today');
+        $nascimento = new DateTime($r['nascimento']);
+        $idade = $hoje->diff($nascimento)->y;
+    }
+?>
+<tr>
+<td><?= htmlspecialchars($r['nome']) ?></td>
+<td><?= htmlspecialchars($r['especie']) ?></td>
+<td><?= htmlspecialchars($r['raca']) ?></td>
+<td><?= htmlspecialchars($r['tutor']) ?></td>
+<td><?= $r['nascimento'] ? date('d/m/Y', strtotime($r['nascimento'])) : '-' ?></td>
+<td><?= $idade ?> ano(s)</td>
+<td class="acoes-tabela">
+<a class="btn btn-primary btn-table" href="form.php?id=<?= (int) $r['id'] ?>"><span aria-hidden="true">✎</span> Editar</a>
+<a class="btn btn-danger btn-table" href="excluir.php?id=<?= (int) $r['id'] ?>" onclick="return confirm('Deseja realmente excluir este animal?');"><span aria-hidden="true">🗑</span> Excluir</a>
+</td>
+</tr>
+<?php endforeach; ?>
+</table>
 </div>
-
-<section class="panel">
-    <h2>Próximas consultas</h2>
-
-    <div class="table-wrap">
-        <table>
-            <tr>
-                <th>Animal</th>
-                <th>Data</th>
-                <th>Veterinário</th>
-                <th>Status</th>
-            </tr>
-
-            <?php foreach ($proximas as $c): ?>
-                <tr>
-                    <td><?= htmlspecialchars($c['animal']) ?></td>
-
-                    <td>
-                        <?= date('d/m/Y H:i', strtotime($c['data_consulta'])) ?>
-                    </td>
-
-                    <td><?= htmlspecialchars($c['veterinario']) ?></td>
-
-                    <td>
-                        <span class="tag">
-                            <?= htmlspecialchars($c['status']) ?>
-                        </span>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    </div>
-</section>
-
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
 
